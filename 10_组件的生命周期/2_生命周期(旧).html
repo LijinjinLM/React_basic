@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>生命周期</title>
+</head>
+<style>
+    .title {
+        background: yellow;
+    }
+</style>
+
+<body>
+    <!--  准备一个容器 -->
+    <div id="app"></div>
+
+    <!--  引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!--  引入react-dom,用于支持react操作dom -->
+    <script src="../js/react-dom.development.js"></script>
+    <!--  引入babel,用于将jsx转为js -->
+    <script src="../js/babel@7.22.5.min.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写text/babel */
+        class Life extends React.Component {
+            constructor(props){
+                super(props)
+                this.state={count:1}  
+                console.log('1----constructor')
+            } 
+            add=()=>{
+                const {count}=this.state
+                this.setState({count:count+1})
+            }
+            
+            killMySelf=()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById('app'))
+            }
+
+            force=()=>{
+                this.forceUpdate()
+            }
+            //组件将要挂载的钩子
+            componentWillMount(){
+                console.log('2------componentWillMount')
+            }
+             //组件挂载完成的钩子
+            componentDidMount(){
+                console.log('4---componentDidMount')                
+            }
+            //组件将要卸载的钩子
+            componentWillUnmount(){
+                console.log('4---componentWillUnmount')
+                clearInterval(this.timer)
+            }
+
+
+
+
+
+
+            //控制组件更新的阀门
+            shouldComponentUpdate(){
+                console.log('shouldComponentUpdate')
+                return true;
+            }
+            componentWillUpdate(){
+                console.log('componentWillUpdate')
+            }
+            componentDidUpdate(){
+                console.log('componentDidUpdate')
+            }
+
+            render() {
+                console.log('3---render')
+                return (
+                    <div>
+                        <h1 > 计数： {this.state.count}</h1> 
+                        <button onClick={this.add}>点我+1</button>
+						<button onClick={this.killMySelf}>卸载掉这个组件</button>
+                        <button onClick={this.force}>不更新任何状态中的数据，强制更新</button>
+                    </div>
+
+                )
+            }
+        }
+        
+        class A extends React.Component {  
+            state={carName:'奔驰'} 
+            addCar=()=>{
+                this.setState({carName:'奥迪'})
+            }       
+            render() {             
+                return (
+                    <div>
+                        <h1>A</h1> 
+                        <button onClick={this.addCar}>换车</button>  
+                        <B carName={this.state.carName}/>                     
+                    </div>
+                )
+            }
+        }
+
+        class B extends React.Component {  
+            //组件将要接收新的props的钩子
+            componentWillReceiveProps(){
+                console.log('componentWillReceiveProps')
+            }  
+            //控制组件更新的阀门
+            shouldComponentUpdate(){
+                console.log('shouldComponentUpdate')
+                return true;
+            }
+            componentWillUpdate(){
+                console.log('componentWillUpdate')
+            }
+            componentDidUpdate(){
+                console.log('componentDidUpdate')
+            }      
+            render() { 
+                console.log('B-Render')            
+                return (
+                    <div>
+                        <h1>我是B组件，接受A的数据:{this.props.carName}</h1>                        
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<A />, document.getElementById('app'))
+
+    </script>
+</body>
+
+</html>

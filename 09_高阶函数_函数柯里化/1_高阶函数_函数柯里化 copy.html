@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>高阶函数_函数柯里化</title>
+</head>
+<style>
+    .title {
+        background: yellow;
+    }
+</style>
+
+<body>
+    <!--  准备一个容器 -->
+    <div id="app"></div>
+
+    <!--  引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!--  引入react-dom,用于支持react操作dom -->
+    <script src="../js/react-dom.development.js"></script>
+    <!--  引入babel,用于将jsx转为js -->
+    <script src="../js/babel@7.22.5.min.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写text/babel */
+        class Demo extends React.Component {
+
+            state = {
+                name: '',
+                password: ''
+            }
+            //函数的柯里化：通过函数的调用继续返回函数的方式，实现多次接受参数最后统一处理的函数编码方式
+            /* function sum(a) {
+                return (b) => {
+                    return (c) => {
+                        return a + b + c
+                    }
+                }
+            }
+            const result = sum(1)(2)(3)
+            console.log(result) */
+
+            saveFormData = (dataType) => {
+                return (event) => {
+                    this.setState({ [dataType]: event.target.value });
+                }
+            }
+
+            handleSubmit = (event) => {
+                event.preventDefault();
+                const { name, password } = this.state;
+                alert(`名字：${name},密码：${password}`)
+
+            }
+            render() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        用户：<input type="text" onChange={this.saveFormData('name')} name="name" /><br />
+                        密码：<input type="password" onChange={this.saveFormData('password')} name="password" />
+                        <button>确定</button>
+                    </form>
+
+                )
+            }
+        }
+        ReactDOM.render(<Demo />, document.getElementById('app'))
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>函数组件的props</title>
+</head>
+
+<body>
+    <!--  准备一个容器 -->
+    <div id="app"></div>
+
+    <!--  引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!--  引入react-dom,用于支持react操作dom -->
+    <script src="../js/react-dom.development.js"></script>
+    <!--  引入babel,用于将jsx转为js -->
+    <script src="../js/babel@7.22.5.min.js"></script>
+
+    <script src="../js/prop-types.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写text/babel */
+        function Person(props) {
+            const { name, age } = props;
+            return (
+                <ul>
+                    <li>{name}</li>
+                    <li>{age}</li>
+                </ul>
+            )
+        }
+
+        //对标签属性进行类型，必要性的限制
+        Person.propTypes = {
+            name: PropTypes.string.isRequired,
+            age: PropTypes.number,
+            say: PropTypes.func
+        }
+        //默认
+        Person.defaultProps = {
+            age: 18
+        }
+
+        /* 2.渲染虚拟dom到页面 */
+        ReactDOM.render(<Person name="Jer" age={14} />, document.getElementById('app'))
+
+    </script>
+</body>
+
+</html>

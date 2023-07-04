@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>受控组件</title>
+</head>
+<style>
+    .title {
+        background: yellow;
+    }
+</style>
+
+<body>
+    <!--  准备一个容器 -->
+    <div id="app"></div>
+
+    <!--  引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!--  引入react-dom,用于支持react操作dom -->
+    <script src="../js/react-dom.development.js"></script>
+    <!--  引入babel,用于将jsx转为js -->
+    <script src="../js/babel@7.22.5.min.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写text/babel */
+        class Demo extends React.Component {
+            state={
+                name:'',
+                password:''
+            }
+            test1 = (event) => {                     
+                this.setState({name:event.target.value});
+            }
+            test2 = (event) => {
+                this.setState({password:event.target.value});   
+            }
+            handleSubmit=(event)=>{
+                event.preventDefault();
+                const {name,password}=this.state;
+                alert(`名字${name},密码：${password}`)
+
+            }
+            render() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        用户：<input type="text" onChange={this.test1} name="name"/><br/>
+                        密码：<input type="password" onChange={this.test2} name="password"/>
+                        <button>确定</button>                        
+                    </form>
+
+                )
+            }
+        }
+        ReactDOM.render(<Demo />, document.getElementById('app'))
+
+    </script>
+</body>
+
+</html>

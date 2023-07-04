@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>生命周期新</title>
+</head>
+<style>
+   
+</style>
+
+<body>
+    <!--  准备一个容器 -->
+    <div id="app"></div>
+
+    <!--  引入react核心库 -->
+    <script src="../js/18.2/react.development.js"></script>
+    <!--  引入react-dom,用于支持react操作dom -->
+    <script src="../js/18.2/react-dom.development.js"></script>
+    <!--  引入babel,用于将jsx转为js -->
+    <script src="../js/babel@7.22.5.min.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写text/babel */
+        class Life extends React.Component {
+            constructor(props){
+                super(props)
+                this.state={count:1}  
+                console.log('1----constructor')
+            } 
+            add=()=>{
+                const {count}=this.state
+                this.setState({count:count+1})
+            }
+            
+            killMySelf=()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById('app'))
+            }
+
+            force=()=>{
+                this.forceUpdate()
+            }
+
+            static getDerivedStateFromProps(props,state){
+                console.log('2---getDerivedStateFromProps',props,state) 
+                return props
+
+            }
+           
+             //组件挂载完成的钩子
+            componentDidMount(){
+                console.log('4---componentDidMount')                
+            }
+            //组件将要卸载的钩子
+            componentWillUnmount(){
+                console.log('4---componentWillUnmount')
+                clearInterval(this.timer)
+            }
+
+            //控制组件更新的阀门
+            shouldComponentUpdate(){
+                console.log('shouldComponentUpdate')
+                return true;
+            }
+          
+            componentDidUpdate(){
+                console.log('componentDidUpdate')
+            }
+
+            render() {
+                console.log('3---render')
+                return (
+                    <div>
+                        <h1 > 计数： {this.state.count}</h1> 
+                        <button onClick={this.add}>点我+1</button>
+						<button onClick={this.killMySelf}>卸载掉这个组件</button>
+                        <button onClick={this.force}>不更新任何状态中的数据，强制更新</button>
+                    </div>
+
+                )
+            }
+        }
+
+        //ReactDOM.render(<A />, document.getElementById('app'))
+        
+        ReactDOM.createRoot(document.getElementById('app')).render( <Life count={199}/>)
+
+    </script>
+</body>
+
+</html>

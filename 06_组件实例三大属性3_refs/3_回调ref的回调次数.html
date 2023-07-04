@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>回调ref的回调次数</title>
+</head>
+<style>
+    .title {
+        background: yellow;
+    }
+</style>
+
+<body>
+    <!--  准备一个容器 -->
+    <div id="app"></div>
+
+    <!--  引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!--  引入react-dom,用于支持react操作dom -->
+    <script src="../js/react-dom.development.js"></script>
+    <!--  引入babel,用于将jsx转为js -->
+    <script src="../js/babel@7.22.5.min.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写text/babel */
+        class Demo extends React.Component {
+            state={isHot:true,wen:'微风'}
+            test1 = () => {
+                const {input1}=this;
+                alert(input1.value)
+            }
+            test2 = () => {
+                const {input2}=this;
+                alert(input2.value)
+                
+            }
+            change=()=>{
+                const isHot=this.state.isHot;
+                //状态必须通过setState更新
+                this.setState({isHot:!isHot})
+            }
+            saveInput=(c)=>{
+                this.input1=c;
+                console.log('回调次数',c);
+            }
+            render() {
+                const {isHot}=this.state   
+                return (
+                    <div>
+                        <h1 onClick={this.change}>今天天气很{isHot?'炎热':'凉爽'}</h1>
+                        {/* <input type="text" ref={(c)=>{this.input1=c;console.log('回调次数',c);}} /> */}
+                        <input type="text" ref={this.saveInput} />
+                        <button onClick={this.test1}>确定</button>
+                
+                    </div>
+
+                )
+            }
+        }
+        ReactDOM.render(<Demo />, document.getElementById('app'))
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>props简写</title>
+</head>
+
+<body>
+    <!--  准备一个容器 -->
+    <div id="app"></div>
+    <div id="app1"></div>
+    <div id="app2"></div>
+
+    <!--  引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!--  引入react-dom,用于支持react操作dom -->
+    <script src="../js/react-dom.development.js"></script>
+    <!--  引入babel,用于将jsx转为js -->
+    <script src="../js/babel@7.22.5.min.js"></script>
+
+    <script src="../js/prop-types.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写text/babel */
+
+        class Person extends React.Component {
+            //在属性前使用static关键字可以定义类属性（静态属性）
+            static propTypes = {
+                name: PropTypes.string.isRequired,
+                age: PropTypes.number,
+                say: PropTypes.func
+            }
+            static defaultProps = {
+                age: 18
+            }
+
+            render() {
+                console.log(this.props)
+                const { name, age } = this.props
+                return (
+                    <ul>
+                        <li>{name}</li>
+                        <li>{age}</li>
+                    </ul>
+                )
+            }            
+        }
+
+
+        /* 2.渲染虚拟dom到页面 */
+        ReactDOM.render(<Person  name="Tom"/>, document.getElementById('app'))
+        ReactDOM.render(<Person name="Jer" age={14} />, document.getElementById('app1'))
+
+        const p = { name: 'com', age: 15 }
+        //ReactDOM.render(<Person name={p.name} age={p.age} />, document.getElementById('app2'))
+        ReactDOM.render(<Person {...p} />, document.getElementById('app2'))
+
+    </script>
+</body>
+
+</html>
